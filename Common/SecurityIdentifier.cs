@@ -638,7 +638,7 @@ namespace QuantConnect
         {
             exception = null;
 
-            if (string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value) || value == " 0")
             {
                 identifier = Empty;
                 return true;
@@ -768,6 +768,7 @@ namespace QuantConnect
         public override string ToString()
         {
             var props = EncodeBase36(_properties);
+            props = props.IsNullOrEmpty() ? "0" : props;
             if (HasUnderlying)
             {
                 return _symbol + ' ' + props + '|' + _underlying.SecurityIdentifier;
