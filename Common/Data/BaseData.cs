@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using QLNet;
 using QuantConnect.Util;
 
 namespace QuantConnect.Data
@@ -333,5 +334,18 @@ namespace QuantConnect.Data
         {
             TypeNameHandling = TypeNameHandling.All
         };
+
+        /// <summary>
+        /// Represents an unassigned BaseData object.
+        /// This is intended to be used to sign that no new data is available
+        /// </summary>
+        public static BaseData Continue = new NullBaseData();
+
+        /// <summary>
+        /// Represents an unassigned BaseData object.
+        /// </summary>
+        private class NullBaseData : BaseData
+        {
+        }
     }
 }

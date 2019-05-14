@@ -105,6 +105,10 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                     {
                         raw = reader.ReadLine();
                         var result = _factory.Reader(_config, raw, _date, _isLiveMode);
+                        if (result == BaseData.Continue)
+                        {
+                            yield break;
+                        }
                         instances = result as BaseDataCollection;
                         if (instances == null)
                         {

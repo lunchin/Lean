@@ -96,14 +96,14 @@ namespace QuantConnect.Data.Custom
             // Do not emit if the content did not change
             if (string.IsNullOrWhiteSpace(format) || _previousContent == content)
             {
-                return GetEmptyCollection(config.Symbol);
+                return Continue;
             }
             _previousContent = content;
 
             try
             {
                 // Fix invalid json before we parse it
-                var index = content.IndexOf("\"series\":");
+                var index = content.IndexOf("\"series\":", StringComparison.Ordinal);
                 content = "{" + content.Substring(index);
                 var series = JObject.Parse(content)["series"][0];
 
@@ -111,7 +111,7 @@ namespace QuantConnect.Data.Custom
                 date = (DateTime)series["updated"];
                 if (_previousDate == date)
                 {
-                    return GetEmptyCollection(config.Symbol);
+                    return Continue;
                 }
                 _previousDate = date;
 
@@ -130,19 +130,14 @@ namespace QuantConnect.Data.Custom
                         EndTime = closeTime + offset,
                         Value = (decimal)jToken[1]
                     }
-                    ).OrderBy(x => x.EndTime);
+                ).OrderBy(x => x.EndTime);
 
                 return new BaseDataCollection(date, config.Symbol, objectList);
             }
             catch
             {
-                return GetEmptyCollection(config.Symbol);
+                return Continue;
             }
-        }
-
-        private BaseDataCollection GetEmptyCollection(Symbol symbol)
-        {
-            return new BaseDataCollection(_previousDate, symbol);
         }
 
         /// <summary>

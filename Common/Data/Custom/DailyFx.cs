@@ -174,7 +174,7 @@ namespace QuantConnect.Data.Custom
         {
             if (_previousContent == content)
             {
-                return null;
+                return Continue;
             }
 
             _previousContent = content;
