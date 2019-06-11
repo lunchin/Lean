@@ -300,6 +300,11 @@ namespace QuantConnect.Data.Market
 
                     }
                 }
+                else
+                {
+                    Log.Error("QuoteBar.Reader(): unexpected ParseTradeAsQuoteBar");
+                    throw new Exception("QuoteBar.Reader(): unexpected ParseTradeAsQuoteBar");
+                }
 
                 // Parse as trade
                 return ParseTradeAsQuoteBar(config, date, line);
